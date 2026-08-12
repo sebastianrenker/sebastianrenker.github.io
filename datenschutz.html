@@ -7,12 +7,17 @@
 <meta name="robots" content="noindex">
 <meta name="color-scheme" content="dark light">
 <style>
-  :root{ --bg:#17181b; --bg-2:#1e2024; --ink:#e9e9ec; --ink-2:#a4a6ad; --ink-3:#74767d; --line:#2f3138; --accent:#7d6cff;
-    --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
-    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; }
-  @media (prefers-color-scheme: light){ :root{ --bg:#f2f2f4; --bg-2:#fff; --ink:#1a1b1f; --ink-2:#54565d; --ink-3:#83858c; --line:#dddee2; --accent:#5a46df; } }
-  :root[data-theme="dark"]{ --bg:#17181b; --bg-2:#1e2024; --ink:#e9e9ec; --ink-2:#a4a6ad; --ink-3:#74767d; --line:#2f3138; --accent:#7d6cff; }
-  :root[data-theme="light"]{ --bg:#f2f2f4; --bg-2:#fff; --ink:#1a1b1f; --ink-2:#54565d; --ink-3:#83858c; --line:#dddee2; --accent:#5a46df; }
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-600-normal.woff2") format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-700-normal.woff2") format("woff2");font-weight:700;font-display:swap}
+  @font-face{font-family:"Plex Mono";src:url("fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Plex Mono";src:url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");font-weight:500;font-display:swap}
+  :root{ --bg:#eceef1; --bg-2:#f7f8fa; --ink:#16171a; --ink-2:#565961; --ink-3:#888b93; --line:#d5d8dd; --accent:#5b47e0;
+    --mono:"Plex Mono",ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  @media (prefers-color-scheme: dark){ :root{ --bg:#161719; --bg-2:#1c1e21; --ink:#e9e9ec; --ink-2:#a2a4ab; --ink-3:#74767d; --line:#2c2e34; --accent:#8f80ff; } }
+  :root[data-theme="light"]{ --bg:#eceef1; --bg-2:#f7f8fa; --ink:#16171a; --ink-2:#565961; --ink-3:#888b93; --line:#d5d8dd; --accent:#5b47e0; }
+  :root[data-theme="dark"]{ --bg:#161719; --bg-2:#1c1e21; --ink:#e9e9ec; --ink-2:#a2a4ab; --ink-3:#74767d; --line:#2c2e34; --accent:#8f80ff; }
   *{box-sizing:border-box}
   body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased; }
   .wrap{ max-width:760px; margin:0 auto; padding:0 24px; }
@@ -53,6 +58,7 @@
 
     <h2>2. Überblick: Diese Website ist bewusst datensparsam</h2>
     <p>Diese Website ist eine statische Informationsseite. Sie setzt <strong>keine Cookies</strong>, bindet <strong>keine Web-Fonts, Skripte, Schriftarten oder Medien von Drittservern</strong> ein, nutzt <strong>kein Tracking und keine Analyse-Tools</strong>, enthält <strong>keine Formulare</strong> und erhebt selbst <strong>keine personenbezogenen Daten</strong> von Ihnen.</p>
+    <p>Insbesondere werden die verwendeten Schriftarten <strong>lokal vom selben Server</strong> ausgeliefert (kein Google-Fonts-CDN o. Ä.); beim Laden der Seite werden dadurch keine Daten – auch keine IP-Adresse – an externe Schriftanbieter übertragen.</p>
 
     <h2>3. Hosting (GitHub Pages)</h2>
     <p>Die Website wird bei <strong>GitHub Pages</strong> gehostet, einem Dienst der GitHub, Inc. (88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA), einem Unternehmen von Microsoft.</p>

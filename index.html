@@ -4,533 +4,397 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RENKER — Trusted Infrastructure for Autonomous AI</title>
-<meta name="description" content="Trusted infrastructure for autonomous AI: capability, permission, identity, and audit for agents that act, learn, and communicate. Three pillars (ACT/LEARN/SECURE) on a shared, partly open-source foundation. Every claim checked against code.">
-<meta name="color-scheme" content="dark light">
+<meta name="description" content="RENKER is trusted infrastructure for autonomous AI: capability, permission, identity, and audit for agents that act, learn, and communicate. Three projects on a shared, partly open-source foundation — every claim checked against code.">
+<meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="RENKER — Trusted Infrastructure for Autonomous AI">
-<meta property="og:description" content="Trusted infrastructure for autonomous AI: capability, permission, identity, and audit for agents that act, learn, and communicate. Three pillars (ACT/LEARN/SECURE) on a shared, partly open-source foundation. Every claim checked against code.">
+<meta property="og:description" content="Capability, permission, identity, and audit for agents that act, learn, and communicate — every claim checked against code.">
 <meta property="og:url" content="https://sebastianrenker.github.io/">
-<meta name="twitter:card" content="summary_large_image">
-</head>
-<body>
 <style>
-  :root {
-    /* Dark graphite — the platform's primary, committed world (visual-system.md) */
-    --bg:      #17181b;
-    --bg-2:    #1e2024;
-    --bg-3:    #25272c;
-    --ink:     #e9e9ec;
-    --ink-2:   #a4a6ad;
-    --ink-3:   #74767d;
-    --line:    #2f3138;
-    --line-2:  #3b3e46;
-    --act:     #7d6cff; /* ACT · Rencora */
-    --secure:  #34c48f; /* SECURE · RenkerVault */
-    --learn:   #d3ad4e; /* LEARN · Continuum */
-    --accent:  #7d6cff; /* platform focus/link tint, neutralish */
-    --btn-ink: #14151a;
+  /* ---------- Self-hosted fonts (no third-party requests) ---------- */
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-500-normal.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-600-normal.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+  @font-face{font-family:"Archivo";src:url("fonts/archivo-latin-700-normal.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+  @font-face{font-family:"Plex Mono";src:url("fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:"Plex Mono";src:url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
 
-    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", "Cascadia Mono", Menlo, Consolas, "Liberation Mono", monospace;
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-
-    --maxw: 1060px;
-    --textw: 66ch;
-    --step--1: 0.82rem;
-    --step-0: 1rem;
-    --step-1: 1.16rem;
-    --step-2: 1.45rem;
-    --step-3: 1.9rem;
-    --hero: clamp(2.15rem, 5.6vw, 3.7rem);
+  /* ---------- Tokens ---------- */
+  :root{
+    --paper:#eceef1; --card:#f7f8fa; --ink:#16171a; --ink-2:#565961; --ink-3:#888b93;
+    --rule:#d5d8dd; --rule-2:#c3c7cd;
+    --act:#5b47e0; --secure:#0f7a54; --learn:#8f6410; --accent:#5b47e0;
+    --ok:#0f7a54; --part:#8f6410; --plan:#5b47e0;
+    --sans:"Archivo", system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    --mono:"Plex Mono", ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+    --maxw:1180px; --textw:64ch;
   }
-
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg:      #f2f2f4;
-      --bg-2:    #ffffff;
-      --bg-3:    #eaeaee;
-      --ink:     #1a1b1f;
-      --ink-2:   #54565d;
-      --ink-3:   #83858c;
-      --line:    #dddee2;
-      --line-2:  #cbccd2;
-      --act:     #5a46df;
-      --secure:  #1f8a63;
-      --learn:   #97792b;
-      --accent:  #5a46df;
-      --btn-ink: #f4f4f6;
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#161719; --card:#1c1e21; --ink:#e9e9ec; --ink-2:#a2a4ab; --ink-3:#74767d;
+      --rule:#2c2e34; --rule-2:#3a3d44;
+      --act:#8f80ff; --secure:#39c78d; --learn:#d6ad4e; --accent:#8f80ff;
+      --ok:#39c78d; --part:#d6ad4e; --plan:#8f80ff;
     }
   }
-
-  /* Explicit toggle wins in both directions */
-  :root[data-theme="dark"] {
-    --bg:#17181b; --bg-2:#1e2024; --bg-3:#25272c; --ink:#e9e9ec; --ink-2:#a4a6ad; --ink-3:#74767d;
-    --line:#2f3138; --line-2:#3b3e46; --act:#7d6cff; --secure:#34c48f; --learn:#d3ad4e; --accent:#7d6cff; --btn-ink:#14151a;
+  :root[data-theme="light"]{
+    --paper:#eceef1; --card:#f7f8fa; --ink:#16171a; --ink-2:#565961; --ink-3:#888b93;
+    --rule:#d5d8dd; --rule-2:#c3c7cd; --act:#5b47e0; --secure:#0f7a54; --learn:#8f6410;
+    --accent:#5b47e0; --ok:#0f7a54; --part:#8f6410; --plan:#5b47e0;
   }
-  :root[data-theme="light"] {
-    --bg:#f2f2f4; --bg-2:#ffffff; --bg-3:#eaeaee; --ink:#1a1b1f; --ink-2:#54565d; --ink-3:#83858c;
-    --line:#dddee2; --line-2:#cbccd2; --act:#5a46df; --secure:#1f8a63; --learn:#97792b; --accent:#5a46df; --btn-ink:#f4f4f6;
-  }
-
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 17px;
-    line-height: 1.62;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+  :root[data-theme="dark"]{
+    --paper:#161719; --card:#1c1e21; --ink:#e9e9ec; --ink-2:#a2a4ab; --ink-3:#74767d;
+    --rule:#2c2e34; --rule-2:#3a3d44; --act:#8f80ff; --secure:#39c78d; --learn:#d6ad4e;
+    --accent:#8f80ff; --ok:#39c78d; --part:#d6ad4e; --plan:#8f80ff;
   }
 
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); font-size:18px; line-height:1.6; font-weight:400;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    font-feature-settings:"kern" 1;
+  }
+  .shell{max-width:var(--maxw); margin:0 auto; padding:0 40px}
+  @media (max-width:640px){ .shell{padding:0 22px} body{font-size:17px} }
 
-  a { color: inherit; text-decoration: none; }
-  a.link {
-    color: var(--ink);
-    border-bottom: 1px solid var(--line-2);
-    transition: border-color .18s ease, color .18s ease;
-  }
-  a.link:hover { border-color: var(--accent); color: var(--accent); }
+  a{color:inherit; text-decoration:none}
+  a.u{border-bottom:1px solid var(--rule-2); transition:border-color .15s, color .15s}
+  a.u:hover{border-color:var(--accent); color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:1px}
 
-  :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
+  .mono{font-family:var(--mono)}
+  .kicker{font-family:var(--mono); font-size:.74rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-3)}
 
-  .mono { font-family: var(--mono); }
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: var(--step--1);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin: 0 0 18px;
-  }
-  h1, h2, h3 { font-family: var(--mono); font-weight: 600; text-wrap: balance; line-height: 1.12; letter-spacing: -0.01em; }
-  em { font-style: normal; font-weight: 600; color: var(--ink); } /* brand: emphasis by weight, not italic */
+  /* ---------- Masthead bar ---------- */
+  .topbar{position:sticky; top:0; z-index:30; background:color-mix(in srgb,var(--paper) 90%, transparent); backdrop-filter:blur(6px); border-bottom:1px solid var(--rule)}
+  .topbar .row{display:flex; align-items:center; justify-content:space-between; height:56px}
+  .wm{font-family:var(--sans); font-weight:700; letter-spacing:.02em; font-size:1.02rem}
+  .topnav{display:flex; gap:26px; font-family:var(--mono); font-size:.76rem; letter-spacing:.02em}
+  .topnav a{color:var(--ink-2)} .topnav a:hover{color:var(--ink)}
+  @media (max-width:760px){ .topnav{display:none} }
 
-  /* ---- Header ---- */
-  header.site {
-    position: sticky; top: 0; z-index: 20;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
+  /* ---------- Masthead / abstract ---------- */
+  .mast{padding:clamp(56px,10vw,116px) 0 0}
+  .mast .huge{
+    font-weight:700; letter-spacing:-.03em; line-height:.9;
+    font-size:clamp(4rem,17vw,11rem); margin:0;
   }
-  .bar { display: flex; align-items: center; justify-content: space-between; height: 60px; }
-  .brand { display: flex; align-items: baseline; gap: 12px; font-family: var(--mono); }
-  .brand .mark { font-weight: 600; letter-spacing: 0.14em; font-size: 1rem; }
-  .brand .tag { font-size: var(--step--1); color: var(--ink-3); letter-spacing: 0.02em; }
-  nav.top { display: flex; gap: 24px; font-family: var(--mono); font-size: var(--step--1); }
-  nav.top a { color: var(--ink-2); letter-spacing: 0.03em; transition: color .18s ease; }
-  nav.top a:hover { color: var(--ink); }
-  @media (max-width: 720px) { nav.top { display: none; } }
+  .mast .meta{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 30px;
+    border-top:1px solid var(--ink); border-bottom:1px solid var(--rule);
+    margin:26px 0 0; padding:14px 0; font-family:var(--mono); font-size:.78rem; color:var(--ink-2)}
+  .mast .meta b{color:var(--ink); font-weight:500}
+  .abstract{display:grid; grid-template-columns:minmax(0,3.2fr) minmax(0,2fr); gap:48px; padding:52px 0 clamp(50px,7vw,84px)}
+  @media (max-width:820px){ .abstract{grid-template-columns:1fr; gap:26px} }
+  .abstract h1{font-size:clamp(1.6rem,3.2vw,2.35rem); font-weight:600; line-height:1.12; letter-spacing:-.015em; margin:0; text-wrap:balance; max-width:20ch}
+  .abstract .lead{color:var(--ink-2); margin:0 0 22px; max-width:52ch}
+  .abstract .lead strong{color:var(--ink); font-weight:600}
+  .actions{display:flex; flex-wrap:wrap; gap:12px}
+  .btn{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em; display:inline-flex; align-items:center; gap:8px;
+    padding:11px 17px; border:1px solid var(--ink); color:var(--ink); background:transparent; transition:background .15s,color .15s}
+  .btn:hover{background:var(--ink); color:var(--paper)}
+  .btn.ghost{border-color:var(--rule-2); color:var(--ink-2)}
+  .btn.ghost:hover{background:transparent; border-color:var(--ink); color:var(--ink)}
 
-  /* ---- Hero ---- */
-  .hero { padding: clamp(64px, 12vw, 132px) 0 clamp(48px, 8vw, 92px); border-bottom: 1px solid var(--line); }
-  .hero h1 { font-size: var(--hero); margin: 0 0 26px; max-width: 15ch; }
-  .hero .lede { font-size: var(--step-1); color: var(--ink-2); max-width: 60ch; margin: 0 0 20px; }
-  .hero .thesis {
-    max-width: 62ch; margin: 0 0 38px; padding-left: 18px;
-    border-left: 2px solid var(--line-2); color: var(--ink);
-  }
-  .hero .thesis strong { font-weight: 600; }
+  /* ---------- Clause sections (spec layout) ---------- */
+  .clause{display:grid; grid-template-columns:96px minmax(0,1fr); gap:0 32px; padding:clamp(44px,6vw,72px) 0; border-top:1px solid var(--rule)}
+  @media (max-width:760px){ .clause{grid-template-columns:1fr; gap:0} }
+  .clause > .num{font-family:var(--mono); font-size:.82rem; color:var(--ink-3); padding-top:4px; letter-spacing:.02em}
+  @media (max-width:760px){ .clause > .num{margin-bottom:14px} }
+  .clause h2{font-size:clamp(1.3rem,2.4vw,1.7rem); font-weight:600; letter-spacing:-.01em; margin:0 0 10px; line-height:1.14; text-wrap:balance}
+  .clause .intro{color:var(--ink-2); margin:0 0 30px; max-width:var(--textw)}
 
-  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
-  .btn {
-    font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.03em;
-    display: inline-flex; align-items: center; gap: 9px;
-    padding: 12px 20px; border-radius: 3px; border: 1px solid var(--line-2);
-    color: var(--ink); background: transparent;
-    transition: border-color .18s ease, background .18s ease, color .18s ease;
-  }
-  .btn:hover { border-color: var(--ink-3); background: var(--bg-2); }
-  .btn.primary { background: var(--ink); color: var(--btn-ink); border-color: var(--ink); }
-  .btn.primary:hover { background: color-mix(in srgb, var(--ink) 88%, var(--accent)); border-color: transparent; }
-  .btn .arw { color: var(--ink-3); }
-  .btn.primary .arw { color: color-mix(in srgb, var(--btn-ink) 60%, transparent); }
+  /* ---------- Pillar register ---------- */
+  .register{border:1px solid var(--rule); border-radius:2px; overflow:hidden}
+  .reg-row{display:grid; grid-template-columns:132px minmax(0,1fr) 210px; gap:22px; align-items:start;
+    padding:20px 22px; border-top:1px solid var(--rule); background:var(--card)}
+  .reg-row:first-child{border-top:0}
+  @media (max-width:720px){ .reg-row{grid-template-columns:1fr; gap:10px} }
+  .reg-axis{font-family:var(--mono); font-size:.78rem; letter-spacing:.14em; display:flex; align-items:center; gap:9px; color:var(--ink)}
+  .swatch{width:9px; height:9px; flex:none; border-radius:1px}
+  .reg-body .name{font-weight:600; font-size:1.05rem}
+  .reg-body .name a{border-bottom:1px solid transparent} .reg-body .name a:hover{border-color:var(--accent); color:var(--accent)}
+  .reg-body p{margin:4px 0 0; color:var(--ink-2); font-size:.96rem; max-width:52ch}
+  .reg-status{font-family:var(--mono); font-size:.74rem; color:var(--ink-2); line-height:1.5}
+  @media (max-width:720px){ .reg-status{color:var(--ink-3)} }
 
-  /* ---- Section scaffolding ---- */
-  section { padding: clamp(56px, 9vw, 96px) 0; border-bottom: 1px solid var(--line); }
-  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
-  .sec-head .idx { font-family: var(--mono); font-size: var(--step--1); color: var(--ink-3); letter-spacing: 0.08em; }
-  .sec-head h2 { font-size: var(--step-2); margin: 0; }
-  .sec-head p { margin: 6px 0 0; color: var(--ink-2); max-width: 60ch; }
+  /* ---------- Evidence table ---------- */
+  .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:2px}
+  table.evidence{border-collapse:collapse; width:100%; min-width:640px; font-size:.92rem}
+  table.evidence th, table.evidence td{text-align:left; padding:14px 16px; border-top:1px solid var(--rule); vertical-align:top}
+  table.evidence thead th{border-top:0; background:var(--card); font-family:var(--mono); font-weight:500; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+  table.evidence td.claim{font-weight:500; color:var(--ink); width:32%}
+  table.evidence td.ev{color:var(--ink-2)}
+  table.evidence td.ev code{font-family:var(--mono); font-size:.86em; color:var(--ink)}
+  .tag{font-family:var(--mono); font-size:.68rem; font-weight:500; letter-spacing:.06em; padding:3px 8px; border:1px solid currentColor; border-radius:2px; white-space:nowrap; display:inline-block}
+  .tag.real{color:var(--ok)} .tag.part{color:var(--part)} .tag.plan{color:var(--plan)} .tag.none{color:var(--ink-3)}
+  .limits{margin:26px 0 0; padding:0; list-style:none; display:grid; gap:12px; max-width:var(--textw)}
+  .limits li{padding-left:26px; position:relative; color:var(--ink); font-size:.95rem}
+  .limits li::before{content:"§"; position:absolute; left:0; top:0; font-family:var(--mono); color:var(--ink-3)}
+  .limits b{font-family:var(--mono); font-weight:500; font-size:.82em; letter-spacing:.04em}
 
-  /* ---- Pillars ---- */
-  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  @media (max-width: 820px) { .pillars { grid-template-columns: 1fr; } }
-  .pillar {
-    background: var(--bg-2); border: 1px solid var(--line);
-    border-top: 2px solid var(--pc); border-radius: 4px;
-    padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 14px;
-    transition: border-color .18s ease, transform .18s ease;
-  }
-  .pillar:hover { transform: translateY(-2px); border-color: var(--line-2); border-top-color: var(--pc); }
-  .pillar .axis { font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.16em; color: var(--pc); }
-  .pillar h3 { font-size: var(--step-1); margin: 0; }
-  .pillar h3 .of { color: var(--ink-3); font-weight: 400; }
-  .pillar p { margin: 0; color: var(--ink-2); font-size: 0.97rem; }
-  .status {
-    font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.02em;
-    color: var(--ink-2); background: var(--bg-3);
-    border: 1px solid var(--line); border-radius: 3px;
-    padding: 4px 8px; display: inline-block; width: fit-content;
-  }
-  .pillar .go { margin-top: auto; font-family: var(--mono); font-size: var(--step--1); color: var(--pc); }
-  .pillar .go:hover { text-decoration: underline; text-underline-offset: 3px; }
+  /* ---------- Core / stats ---------- */
+  .core-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:30px; align-items:start}
+  @media (max-width:820px){ .core-grid{grid-template-columns:1fr; gap:22px} }
+  .figures{display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--rule); border-radius:2px; overflow:hidden}
+  .fig{padding:20px 20px; border-top:1px solid var(--rule); border-left:1px solid var(--rule)}
+  .fig:nth-child(-n+2){border-top:0} .fig:nth-child(odd){border-left:0}
+  .fig .n{font-family:var(--mono); font-weight:500; font-size:1.7rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums; color:var(--ink)}
+  .fig .l{font-size:.8rem; color:var(--ink-2); margin-top:3px}
+  .install{font-family:var(--mono); font-size:.82rem; background:var(--card); border:1px solid var(--rule); border-radius:2px; padding:12px 14px; overflow-x:auto; white-space:pre; margin:0 0 12px; color:var(--ink)}
+  .ci{display:flex; flex-wrap:wrap; gap:6px}
+  .ci span{font-family:var(--mono); font-size:.72rem; color:var(--ink-2); border:1px solid var(--rule); border-radius:2px; padding:3px 8px}
+  .foot-note{font-family:var(--mono); font-size:.74rem; color:var(--ink-3); margin:14px 0 0}
+  .core-copy p{color:var(--ink-2); margin:0 0 14px; max-width:52ch}
+  .core-copy p strong{color:var(--ink); font-weight:600}
 
-  /* ---- Receipts / transparency ---- */
-  .receipts { background: var(--bg-2); }
-  .receipts .grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; align-items: start; }
-  @media (max-width: 820px) { .receipts .grid { grid-template-columns: 1fr; gap: 30px; } }
-  .receipts h2 { font-size: var(--step-3); margin: 0 0 20px; max-width: 16ch; }
-  .receipts p { color: var(--ink-2); max-width: 56ch; }
-  .receipts .honest { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
-  .receipts .honest li {
-    font-size: 0.95rem; color: var(--ink); padding-left: 20px; position: relative;
-  }
-  .receipts .honest li::before {
-    content: "—"; position: absolute; left: 0; color: var(--ink-3); font-family: var(--mono);
-  }
-  .receipts .honest b { font-family: var(--mono); font-weight: 600; font-size: 0.86em; letter-spacing: 0.02em; }
+  /* ---------- Diagram ---------- */
+  .dgm-wrap{overflow-x:auto}
+  .dgm{min-width:560px; max-width:800px; margin:0 auto; font-family:var(--mono); display:flex; flex-direction:column; align-items:center}
+  .db{border:1px solid var(--rule-2); background:var(--card); border-radius:2px; padding:11px 15px; text-align:center}
+  .db .t{font-size:.86rem; font-weight:500; color:var(--ink)} .db .s{font-size:.7rem; color:var(--ink-2); margin-top:2px}
+  .db.core{background:transparent} .db.authz{border-color:var(--secure)}
+  .cn{width:1px; height:20px; background:var(--rule-2)}
+  .drow{display:flex; gap:16px; width:100%; justify-content:center; margin-top:12px}
+  .drow .c{display:flex; flex-direction:column; align-items:center; flex:1; max-width:210px}
+  .dl{font-size:.7rem; letter-spacing:.14em; padding:3px 0}
+  .dl.a{color:var(--act)} .dl.l{color:var(--learn)} .dl.s{color:var(--secure)}
+  .spine{width:56%; height:1px; background:var(--rule-2)}
+  .prims{font-size:.78rem; color:var(--ink-2); margin-top:2px}
 
-  /* ---- Proof panel (authz) ---- */
-  .proof {
-    border: 1px solid var(--line); border-radius: 5px; overflow: hidden;
-    background: var(--bg);
-  }
-  .proof .top {
-    padding: 22px 22px 18px; border-bottom: 1px solid var(--line);
-    background: linear-gradient(0deg, transparent, color-mix(in srgb, var(--secure) 6%, transparent));
-  }
-  .proof .top .k { font-family: var(--mono); font-size: var(--step--1); color: var(--secure); letter-spacing: 0.04em; }
-  .proof .top h3 { margin: 8px 0 0; font-size: var(--step-1); }
-  .stats { display: grid; grid-template-columns: repeat(2, 1fr); }
-  .stat { padding: 18px 22px; border-top: 1px solid var(--line); }
-  .stat:nth-child(odd) { border-right: 1px solid var(--line); }
-  .stat .n { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
-  .stat .l { font-size: 0.8rem; color: var(--ink-2); margin-top: 3px; }
-  .proof .body { padding: 20px 22px 22px; }
-  .proof .body p { margin: 0 0 16px; color: var(--ink-2); font-size: 0.95rem; }
-  .code {
-    font-family: var(--mono); font-size: 0.82rem; color: var(--ink);
-    background: var(--bg-3); border: 1px solid var(--line); border-radius: 4px;
-    padding: 12px 14px; overflow-x: auto; white-space: pre; display: block;
-  }
-  .proof .foot { font-family: var(--mono); font-size: 0.76rem; color: var(--ink-3); margin-top: 14px; }
-  .ci-line { display: flex; flex-wrap: wrap; gap: 6px 10px; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-2); margin-top: 4px; }
-  .ci-line span { background: var(--bg-3); border: 1px solid var(--line); border-radius: 3px; padding: 3px 8px; }
+  /* ---------- Scope ---------- */
+  .scope{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+  @media (max-width:640px){ .scope{grid-template-columns:1fr} }
+  .scope h3{font-family:var(--mono); font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); margin:0 0 14px}
+  .scope ul{margin:0; padding:0; list-style:none; display:grid; gap:11px}
+  .scope li{padding-left:20px; position:relative; color:var(--ink-2); font-size:.96rem}
+  .scope .is li::before{content:"+"; position:absolute; left:0; color:var(--secure); font-family:var(--mono); font-weight:500}
+  .scope .isnot li::before{content:"\2212"; position:absolute; left:0; color:var(--ink-3); font-family:var(--mono)}
 
-  /* ---- Diagram ---- */
-  .diagram-scroll { overflow-x: auto; padding: 4px; }
-  .diagram {
-    min-width: 560px; margin: 0 auto; max-width: 760px;
-    display: flex; flex-direction: column; align-items: center; gap: 0;
-    font-family: var(--mono);
-  }
-  .dbox {
-    background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 4px;
-    padding: 12px 16px; text-align: center; color: var(--ink);
-  }
-  .dbox .t { font-size: 0.9rem; font-weight: 600; }
-  .dbox .s { font-size: 0.72rem; color: var(--ink-2); margin-top: 3px; font-weight: 400; }
-  .dbox.root { background: var(--bg-3); }
-  .dbox.authz { border-color: var(--secure); }
-  .dconn { width: 1px; height: 22px; background: var(--line-2); }
-  .drow { display: flex; gap: 16px; width: 100%; justify-content: center; }
-  .drow .col { display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 220px; }
-  .daxis { font-size: 0.72rem; letter-spacing: 0.16em; padding: 4px 0; }
-  .daxis.act { color: var(--act); }
-  .daxis.learn { color: var(--learn); }
-  .daxis.secure { color: var(--secure); }
-  .dspine { width: 60%; height: 1px; background: var(--line-2); }
-  .primitives { font-size: 0.8rem; color: var(--ink-2); letter-spacing: 0.02em; }
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--ink); margin-top:8px; padding:44px 0 60px}
+  .frow{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:34px}
+  @media (max-width:720px){ .frow{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:420px){ .frow{grid-template-columns:1fr} }
+  .frepo{border:1px solid var(--rule); border-radius:2px; padding:13px 14px; font-family:var(--mono); font-size:.8rem; color:var(--ink-2); transition:border-color .15s,color .15s}
+  .frepo:hover{border-color:var(--ink); color:var(--ink)}
+  .frepo .r{color:var(--ink); font-weight:500} .frepo .d{font-size:.7rem; color:var(--ink-3); margin-top:3px}
+  .colo{display:flex; justify-content:space-between; gap:16px 30px; flex-wrap:wrap; font-family:var(--mono); font-size:.74rem; color:var(--ink-3); border-top:1px solid var(--rule); padding-top:20px}
+  .colo a{color:var(--ink-2)} .colo a:hover{color:var(--ink)}
 
-  /* ---- is / is-not ---- */
-  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 720px) { .twocol { grid-template-columns: 1fr; } }
-  .panel { background: var(--bg-2); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
-  .panel h3 { font-size: var(--step-0); margin: 0 0 16px; letter-spacing: 0.02em; }
-  .panel ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .panel li { color: var(--ink-2); font-size: 0.95rem; padding-left: 22px; position: relative; }
-  .panel.is li::before { content: "+"; position: absolute; left: 0; color: var(--secure); font-family: var(--mono); font-weight: 600; }
-  .panel.isnot li::before { content: "\00d7"; position: absolute; left: 0; color: var(--ink-3); font-family: var(--mono); }
-
-  /* ---- Core ---- */
-  .core .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 720px) { .core .grid { grid-template-columns: 1fr; } }
-  .corecard { border: 1px solid var(--line); border-radius: 4px; padding: 24px; background: var(--bg-2); }
-  .corecard .k { font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.04em; color: var(--ink-3); }
-  .corecard.public .k { color: var(--secure); }
-  .corecard h3 { margin: 8px 0 12px; font-size: var(--step-1); }
-  .corecard p { margin: 0; color: var(--ink-2); font-size: 0.95rem; }
-  .corecard .m { margin-top: 16px; font-family: var(--mono); font-size: var(--step--1); color: var(--ink); }
-  .corecard .m:hover { color: var(--accent); }
-
-  /* ---- Footer ---- */
-  footer.site { padding: 60px 0 72px; }
-  .frepos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 40px; }
-  @media (max-width: 720px) { .frepos { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 420px) { .frepos { grid-template-columns: 1fr; } }
-  .frepo {
-    font-family: var(--mono); font-size: 0.82rem; color: var(--ink-2);
-    border: 1px solid var(--line); border-radius: 4px; padding: 14px 15px;
-    display: flex; flex-direction: column; gap: 4px;
-    transition: border-color .18s ease, color .18s ease;
-  }
-  .frepo:hover { border-color: var(--line-2); color: var(--ink); }
-  .frepo .r { color: var(--ink); font-weight: 600; }
-  .frepo .d { font-size: 0.72rem; color: var(--ink-3); }
-  .colophon { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 22px; }
-  .colophon a { color: var(--ink-2); }
-  .colophon a:hover { color: var(--ink); }
-
-  @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; animation: none !important; }
-  }
-
-  /* Gentle load-in for the hero only */
-  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  .hero > .wrap > * { animation: rise .5s ease both; }
-  .hero .lede { animation-delay: .05s; }
-  .hero .thesis { animation-delay: .1s; }
-  .hero .cta-row { animation-delay: .15s; }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
 </style>
-
-<header class="site">
-  <div class="wrap bar">
-    <div class="brand">
-      <span class="mark">RENKER</span>
-      <span class="tag">// platform</span>
-    </div>
-    <nav class="top" aria-label="Primary">
-      <a href="#pillars">Pillars</a>
-      <a href="#receipts">Reality-check</a>
+</head>
+<body>
+<header class="topbar">
+  <div class="shell row">
+    <span class="wm">RENKER</span>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#pillars">Projects</a>
+      <a href="#verification">Verification</a>
       <a href="#core">Core</a>
       <a href="#architecture">Architecture</a>
-      <a href="https://github.com/sebastianrenker">GitHub</a>
+      <a href="https://github.com/sebastianrenker">GitHub&nbsp;↗</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <section class="hero" aria-labelledby="h1">
-    <div class="wrap">
-      <p class="eyebrow">Infrastructure for autonomous AI</p>
-      <h1 id="h1">Trusted infrastructure for autonomous&nbsp;AI.</h1>
-      <p class="lede">AI systems are becoming capable of acting — operating a computer, sending messages, running experiments. RENKER builds the layer that makes those actions controllable, verifiable, and accountable.</p>
-      <p class="thesis"><strong>Capability shouldn't imply permission.</strong> The decision of what an agent may do lives in a small, deterministic, auditable layer <em>outside</em> the model — one that reads only trusted grants, never the agent's own claims about what it should be allowed to do.</p>
-      <div class="cta-row">
-        <a class="btn primary" href="#pillars">Explore the platform <span class="arw">→</span></a>
-        <a class="btn" href="https://github.com/sebastianrenker">View on GitHub <span class="arw">↗</span></a>
-      </div>
+  <section class="mast shell" aria-labelledby="title">
+    <p class="kicker">Trusted infrastructure for autonomous AI</p>
+    <h1 class="huge" id="title" aria-label="RENKER">RENKER</h1>
+    <div class="meta">
+      <span>Platform overview</span>
+      <span><b>Three projects</b> · one shared core</span>
+      <span><b>ACT</b> · <b>LEARN</b> · <b>SECURE</b></span>
+      <span>Revised 2026-08</span>
     </div>
-  </section>
-
-  <section id="pillars" aria-labelledby="pillars-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="idx">§ pillars</span>
-        <div>
-          <h2 id="pillars-h">Three problem domains, one foundation</h2>
-          <p>RENKER is organized around three concrete questions about autonomous AI — each mapped to a project, all sharing the same identity, capability, permission, policy, and audit primitives.</p>
-        </div>
+    <div class="abstract">
+      <div>
+        <h1>Capability shouldn't imply permission.</h1>
       </div>
-      <div class="pillars">
-        <article class="pillar" style="--pc: var(--act)">
-          <span class="axis">ACT</span>
-          <h3>Rencora <span class="of">/ desktop agent</span></h3>
-          <p>A desktop AI agent that can operate your computer — with a capability-security layer between what it wants to do and what it's allowed to do.</p>
-          <span class="status">personal use · guard integration</span>
-          <a class="go" href="https://github.com/sebastianrenker/rencora">rencora →</a>
-        </article>
-        <article class="pillar" style="--pc: var(--learn)">
-          <span class="axis">LEARN</span>
-          <h3>Continuum <span class="of">/ research</span></h3>
-          <p>An autonomous research architecture where every claim carries an explicit evidence category — experimental, predicted, or literature-derived — enforced in code, not policy.</p>
-          <span class="status">Phase 0 prototype · simulated data</span>
-          <a class="go" href="https://github.com/sebastianrenker/continuum">continuum →</a>
-        </article>
-        <article class="pillar" style="--pc: var(--secure)">
-          <span class="axis">SECURE</span>
-          <h3>RenkerVault <span class="of">/ identity</span></h3>
-          <p>Zero-knowledge identity and secure-communication infrastructure — the relay only ever sees ciphertext, whether the endpoint is a person or an agent.</p>
-          <span class="status">E2E messaging prototype · ZK relay</span>
-          <a class="go" href="https://github.com/sebastianrenker/renkervault">renkervault →</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="receipts" class="receipts" aria-labelledby="receipts-h">
-    <div class="wrap">
-      <div class="grid">
-        <div>
-          <p class="eyebrow">Not another AI pitch</p>
-          <h2 id="receipts-h">Every claim here is checked against code.</h2>
-          <p>Each statement on this site is traceable to a README, a test run, or a CI workflow — and where a capability is partial or planned, it says so instead of implying it's finished. The receipts live in one document: a reality-check across all four repositories, each claim marked <b>REAL</b>, <b>PARTIAL</b>, or <b>PLANNED</b> with the evidence next to it.</p>
-          <p style="margin-top:20px"><a class="btn" href="https://github.com/sebastianrenker/sebastianrenker.github.io/blob/main/reality-check.md">Read the reality-check <span class="arw">↗</span></a></p>
-        </div>
-        <div>
-          <ul class="honest">
-            <li><b>NO EXTERNAL AUDIT.</b> No RENKER project has undergone an independent third-party security review. Internal hardening reviews are documented per project.</li>
-            <li><b>CI, HONESTLY.</b> Not every project ran its tests in CI at launch. What runs automatically is stated plainly, never dressed up as "continuously tested."</li>
-            <li><b>LIMITS ON THE FRONT PAGE.</b> Every repo's README carries its own "what this does not protect against" section — a security claim you can't falsify isn't worth much.</li>
-          </ul>
+      <div>
+        <p class="lead">AI systems are becoming capable of acting — operating a computer, sending messages, running experiments. RENKER builds the layer that makes those actions <strong>controllable, verifiable, and accountable</strong>: the decision of what an agent may do lives in a small, deterministic, auditable layer outside the model, reading only trusted grants — never the agent's own claims.</p>
+        <div class="actions">
+          <a class="btn" href="https://github.com/sebastianrenker/sebastianrenker.github.io/blob/main/reality-check.md">Read the reality-check ↗</a>
+          <a class="btn ghost" href="https://github.com/sebastianrenker">All repositories ↗</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="proof" aria-labelledby="proof-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="idx">§ open-core</span>
-        <div>
-          <h2 id="proof-h">The most-verified piece is open source</h2>
-          <p>The platform's authorization core ships publicly and independently, so anyone can check it — not a marketing promise, a package you can install and test.</p>
-        </div>
-      </div>
-      <div class="proof">
-        <div class="top">
-          <span class="k">renker-core-authz · public authorization core</span>
-          <h3>Deterministic ALLOW / DENY / REQUIRE_APPROVAL — decided outside the model.</h3>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="n">88</div><div class="l">passing tests</div></div>
-          <div class="stat"><div class="n">0</div><div class="l">runtime dependencies</div></div>
-          <div class="stat"><div class="n">SHA-256</div><div class="l">hash-chained audit log</div></div>
-          <div class="stat"><div class="n">Apache-2.0</div><div class="l">license</div></div>
-        </div>
-        <div class="body">
-          <p>Decisions come only from stored, scoped grants — never from what the agent claims it should be allowed to do. Every decision is recorded in a tamper-evident, hash-chained audit log with a <span class="mono">verify()</span> you can run yourself.</p>
-          <code class="code">pip install git+https://github.com/sebastianrenker/renker-core-authz</code>
-          <div class="ci-line" aria-label="CI checks on every push">
-            <span>format</span><span>lint</span><span>types</span><span>tests</span><span>build</span><span>dependency-audit</span>
+  <section id="pillars" class="clause shell" aria-labelledby="c1">
+    <div class="num">§ 1</div>
+    <div>
+      <h2 id="c1">Three problem domains, one foundation</h2>
+      <p class="intro">Each project answers one concrete question about autonomous AI. All three consume the same identity, capability, permission, policy, and audit primitives — so the security logic is written once, not reinvented per product.</p>
+      <div class="register">
+        <div class="reg-row">
+          <div class="reg-axis"><span class="swatch" style="background:var(--act)"></span>ACT</div>
+          <div class="reg-body">
+            <div class="name"><a class="u" href="https://github.com/sebastianrenker/rencora">Rencora</a></div>
+            <p>A desktop AI agent that can operate your computer — with a capability-security layer between what it wants to do and what it's allowed to do.</p>
           </div>
-          <p class="foot">Verified 2026-08-11 — pytest reported 88 passed, 1 skipped. Installable from source today; PyPI release planned. <a class="link" href="https://github.com/sebastianrenker/renker-core-authz">See the repo &amp; CI ↗</a></p>
+          <div class="reg-status">personal use<br>guard integration (partial)</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="architecture" aria-labelledby="arch-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="idx">§ architecture</span>
-        <div>
-          <h2 id="arch-h">How it fits together</h2>
-          <p>Three pillars over one shared foundation. The authorization slice of that foundation is public; the boxes below map directly to repositories on GitHub.</p>
-        </div>
-      </div>
-      <div class="diagram-scroll">
-        <div class="diagram" role="img" aria-label="RENKER architecture: three pillars — ACT/Rencora, LEARN/Continuum, SECURE/RenkerVault — over the shared renker-core foundation, whose public authorization subset is renker-core-authz, exposing Identity, Capability, Policy and Audit primitives.">
-          <div class="dbox root"><div class="t">RENKER</div><div class="s">trusted infrastructure for autonomous AI</div></div>
-          <div class="dconn"></div>
-          <div class="dspine"></div>
-          <div class="drow" style="margin-top:14px">
-            <div class="col">
-              <div class="daxis act">ACT</div>
-              <div class="dconn"></div>
-              <div class="dbox"><div class="t">Rencora</div><div class="s">desktop agent · personal use</div></div>
-            </div>
-            <div class="col">
-              <div class="daxis learn">LEARN</div>
-              <div class="dconn"></div>
-              <div class="dbox"><div class="t">Continuum</div><div class="s">Phase 0 · simulated data</div></div>
-            </div>
-            <div class="col">
-              <div class="daxis secure">SECURE</div>
-              <div class="dconn"></div>
-              <div class="dbox"><div class="t">RenkerVault</div><div class="s">E2E prototype · ZK relay</div></div>
-            </div>
+        <div class="reg-row">
+          <div class="reg-axis"><span class="swatch" style="background:var(--learn)"></span>LEARN</div>
+          <div class="reg-body">
+            <div class="name"><a class="u" href="https://github.com/sebastianrenker/continuum">Continuum</a></div>
+            <p>An autonomous research architecture where every claim carries an explicit evidence category — experimental, predicted, or literature-derived — enforced in code.</p>
           </div>
-          <div class="dconn" style="margin-top:14px"></div>
-          <div class="dbox root"><div class="t">renker-core</div><div class="s">shared foundation</div></div>
-          <div class="dconn"></div>
-          <div class="dbox authz"><div class="t">renker-core-authz</div><div class="s">public · 88 tests · CI-enforced · Apache-2.0</div></div>
-          <div class="dconn"></div>
-          <div class="primitives">Identity · Capability · Policy · Audit</div>
+          <div class="reg-status">Phase 0 prototype<br>simulated data</div>
+        </div>
+        <div class="reg-row">
+          <div class="reg-axis"><span class="swatch" style="background:var(--secure)"></span>SECURE</div>
+          <div class="reg-body">
+            <div class="name"><a class="u" href="https://github.com/sebastianrenker/renkervault">RenkerVault</a></div>
+            <p>Zero-knowledge identity and secure-communication infrastructure — the relay only ever sees ciphertext, whether the endpoint is a person or an agent.</p>
+          </div>
+          <div class="reg-status">E2E messaging prototype<br>zero-knowledge relay</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="stance" aria-labelledby="stance-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="idx">§ stance</span>
-        <div>
-          <h2 id="stance-h">What RENKER is — and isn't</h2>
-          <p>The discipline is deliberate: it matches what the repositories actually state about themselves.</p>
+  <section id="verification" class="clause shell" aria-labelledby="c2">
+    <div class="num">§ 2</div>
+    <div>
+      <h2 id="c2">Every claim is checked against code</h2>
+      <p class="intro">Not another AI pitch. Each statement is traceable to a README, a test run, or a CI workflow, and marked for how finished it is. The full accounting — including the gaps — lives in one document.</p>
+      <div class="tablewrap">
+        <table class="evidence">
+          <thead><tr><th>Claim</th><th>Status</th><th>Evidence</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="claim">Authorization decided outside the model</td>
+              <td><span class="tag real">REAL</span></td>
+              <td class="ev"><code>evaluate()</code> returns ALLOW / DENY / REQUIRE_APPROVAL from stored grants only; 88 passing tests in renker-core-authz.</td>
+            </tr>
+            <tr>
+              <td class="claim">Tamper-evident audit log</td>
+              <td><span class="tag real">REAL</span></td>
+              <td class="ev">SHA-256 hash-chained log with a runnable <code>verify()</code>, covered by tests.</td>
+            </tr>
+            <tr>
+              <td class="claim">Capability enforcement in the desktop agent</td>
+              <td><span class="tag part">PARTIAL</span></td>
+              <td class="ev">Rencora's <code>renker_guard.py</code> integrates the core where installed; not yet the enforced path for every action.</td>
+            </tr>
+            <tr>
+              <td class="claim">Post-quantum messaging handshake</td>
+              <td><span class="tag part">PARTIAL</span></td>
+              <td class="ev">RenkerVault handshake combines X25519 + ML-KEM-768; the ongoing ratchet is not PQ-secured (documented).</td>
+            </tr>
+            <tr>
+              <td class="claim">Autonomous research against real lab hardware</td>
+              <td><span class="tag plan">PLANNED</span></td>
+              <td class="ev">Continuum is Phase 0 on simulated data; evidence-tagging is enforced in code today, hardware is a later phase.</td>
+            </tr>
+            <tr>
+              <td class="claim">Independent third-party security audit</td>
+              <td><span class="tag none">NONE</span></td>
+              <td class="ev">No RENKER project has had an external audit. Internal hardening reviews are documented per repo.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="limits">
+        <li><b>NO OVERCLAIM.</b> Where a capability is partial or planned, the copy says so — a security claim you can't falsify isn't worth much.</li>
+        <li><b>LIMITS IN THE OPEN.</b> Every repository README carries its own "what this does not protect against" section.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="core" class="clause shell" aria-labelledby="c3">
+    <div class="num">§ 3</div>
+    <div>
+      <h2 id="c3">The most-verified piece is open source</h2>
+      <p class="intro">The platform's authorization core ships publicly and independently, so anyone can install and test it. It is the verifiable version of the shared foundation.</p>
+      <div class="core-grid">
+        <div class="figures" aria-label="renker-core-authz at a glance">
+          <div class="fig"><div class="n">88</div><div class="l">passing tests</div></div>
+          <div class="fig"><div class="n">0</div><div class="l">runtime dependencies</div></div>
+          <div class="fig"><div class="n">SHA-256</div><div class="l">hash-chained audit</div></div>
+          <div class="fig"><div class="n">Apache-2.0</div><div class="l">license</div></div>
+        </div>
+        <div class="core-copy">
+          <p><strong>renker-core-authz</strong> decides whether an agent's requested action runs — from trusted grants, never from what the agent claims — and records every decision in a tamper-evident log.</p>
+          <div class="install">pip install git+https://github.com/sebastianrenker/renker-core-authz</div>
+          <div class="ci" aria-label="CI on every push"><span>format</span><span>lint</span><span>types</span><span>tests</span><span>build</span><span>dependency-audit</span></div>
+          <p class="foot-note">Verified 2026-08-11 — pytest: 88 passed, 1 skipped. From source today; PyPI planned. <a class="u" href="https://github.com/sebastianrenker/renker-core-authz">Repository ↗</a></p>
         </div>
       </div>
-      <div class="twocol">
-        <div class="panel is">
+    </div>
+  </section>
+
+  <section id="architecture" class="clause shell" aria-labelledby="c4">
+    <div class="num">§ 4</div>
+    <div>
+      <h2 id="c4">How it fits together</h2>
+      <p class="intro">Three projects over one shared foundation, whose authorization slice is public. Every box maps to a repository.</p>
+      <div class="dgm-wrap">
+        <div class="dgm" role="img" aria-label="RENKER architecture: three projects — ACT/Rencora, LEARN/Continuum, SECURE/RenkerVault — over the shared renker-core foundation, whose public authorization subset renker-core-authz exposes Identity, Capability, Policy and Audit primitives.">
+          <div class="db core"><div class="t">RENKER</div><div class="s">trusted infrastructure for autonomous AI</div></div>
+          <div class="cn"></div><div class="spine"></div>
+          <div class="drow">
+            <div class="c"><div class="dl a">ACT</div><div class="cn"></div><div class="db"><div class="t">Rencora</div><div class="s">desktop agent · personal use</div></div></div>
+            <div class="c"><div class="dl l">LEARN</div><div class="cn"></div><div class="db"><div class="t">Continuum</div><div class="s">Phase 0 · simulated data</div></div></div>
+            <div class="c"><div class="dl s">SECURE</div><div class="cn"></div><div class="db"><div class="t">RenkerVault</div><div class="s">E2E prototype · ZK relay</div></div></div>
+          </div>
+          <div class="cn" style="margin-top:12px"></div>
+          <div class="db core"><div class="t">renker-core</div><div class="s">shared foundation</div></div>
+          <div class="cn"></div>
+          <div class="db authz"><div class="t">renker-core-authz</div><div class="s">public · 88 tests · CI-enforced · Apache-2.0</div></div>
+          <div class="cn"></div>
+          <div class="prims">Identity · Capability · Policy · Audit</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="clause shell" aria-labelledby="c5">
+    <div class="num">§ 5</div>
+    <div>
+      <h2 id="c5">Scope &amp; stance</h2>
+      <p class="intro">The discipline is deliberate — it matches what the repositories state about themselves.</p>
+      <div class="scope">
+        <div>
           <h3>It is</h3>
-          <ul>
+          <ul class="is">
             <li>Infrastructure for one narrow, real problem: making autonomous AI actions controllable, verifiable, accountable.</li>
-            <li>Explainable — every decision a RENKER component makes should be inspectable, not a black box.</li>
-            <li>Honest about maturity: prototypes are called prototypes, private repos are called private.</li>
+            <li>Explainable — every decision a component makes should be inspectable.</li>
+            <li>Honest about maturity: prototypes are called prototypes.</li>
           </ul>
         </div>
-        <div class="panel isnot">
-          <h3>It is not</h3>
-          <ul>
-            <li>An AGI project, or any implication that these systems approach general intelligence.</li>
-            <li>"Unhackable" or perfectly secure — every project ships a documented security model with known limits.</li>
-            <li>A claim to revolutionize an industry. It solves a specific problem, well.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="core" class="core" aria-labelledby="core-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="idx">§ foundation</span>
         <div>
-          <h2 id="core-h">The shared foundation</h2>
-          <p>Every RENKER project answers the same questions — who is acting, what are they allowed to do, who decided that, and can you prove what happened. Those answers live in one place instead of being reinvented per project.</p>
-        </div>
-      </div>
-      <div class="grid">
-        <div class="corecard">
-          <span class="k">renker-core · shared foundation</span>
-          <h3>Identity, capability, policy, audit</h3>
-          <p>The primitives Rencora, RenkerVault, and Continuum all consume: who is acting (human, agent, service, device), what they hold as a scoped, revocable capability, the deterministic policy that turns a request into a decision, and a tamper-evident record of it.</p>
-          <a class="m" href="https://github.com/sebastianrenker/renker-core">renker-core →</a>
-        </div>
-        <div class="corecard public">
-          <span class="k">renker-core-authz · public subset</span>
-          <h3>The verifiable, installable core</h3>
-          <p>The authorization slice ships openly as a zero-dependency, Apache-2.0 Python package with 88 passing tests and CI-enforced format, lint, type, test, build, and dependency checks on every change — with a "security model (honest)" section that states exactly what it does not provide.</p>
-          <a class="m" href="https://github.com/sebastianrenker/renker-core-authz">renker-core-authz →</a>
+          <h3>It is not</h3>
+          <ul class="isnot">
+            <li>An AGI project, or a claim to approach general intelligence.</li>
+            <li>"Unhackable" — every project ships a documented security model with known limits.</li>
+            <li>A claim to revolutionize an industry.</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="site">
-  <div class="wrap">
-    <p class="eyebrow">Repositories</p>
-    <div class="frepos">
-      <a class="frepo" href="https://github.com/sebastianrenker/rencora"><span class="r">rencora ↗</span><span class="d">ACT · desktop agent</span></a>
-      <a class="frepo" href="https://github.com/sebastianrenker/continuum"><span class="r">continuum ↗</span><span class="d">LEARN · Phase 0 research</span></a>
-      <a class="frepo" href="https://github.com/sebastianrenker/renkervault"><span class="r">renkervault ↗</span><span class="d">SECURE · E2E messaging</span></a>
-      <a class="frepo" href="https://github.com/sebastianrenker/renker-core-authz"><span class="r">renker-core-authz ↗</span><span class="d">public authorization core</span></a>
+<footer>
+  <div class="shell">
+    <p class="kicker" style="margin-bottom:18px">Repositories</p>
+    <div class="frow">
+      <a class="frepo" href="https://github.com/sebastianrenker/rencora"><div class="r">rencora ↗</div><div class="d">ACT · desktop agent</div></a>
+      <a class="frepo" href="https://github.com/sebastianrenker/continuum"><div class="r">continuum ↗</div><div class="d">LEARN · Phase 0 research</div></a>
+      <a class="frepo" href="https://github.com/sebastianrenker/renkervault"><div class="r">renkervault ↗</div><div class="d">SECURE · E2E messaging</div></a>
+      <a class="frepo" href="https://github.com/sebastianrenker/renker-core-authz"><div class="r">renker-core-authz ↗</div><div class="d">public authorization core</div></a>
     </div>
-    <div class="colophon">
-      <span>© 2026 RENKER — built independently, with AI-assisted development. Rencora is for personal, non-commercial use.</span>
-      <span class="legal"><a href="datenschutz.html">Datenschutz</a> · <a href="https://github.com/sebastianrenker">github.com/sebastianrenker</a></span>
+    <div class="colo">
+      <span>© 2026 RENKER — private, non-commercial project. Built independently.</span>
+      <span><a href="datenschutz.html">Datenschutz</a> · <a href="https://github.com/sebastianrenker">github.com/sebastianrenker</a></span>
     </div>
   </div>
 </footer>
-
 </body>
 </html>
