@@ -253,9 +253,9 @@
           <div class="reg-axis"><span class="swatch" style="background:var(--secure)"></span>SECURE</div>
           <div class="reg-body">
             <div class="name"><a class="u" href="https://github.com/sebastianrenker/renkervault">RenkerVault</a></div>
-            <p>Zero-knowledge identity and secure-communication infrastructure — the relay only ever sees ciphertext, whether the endpoint is a person or an agent.</p>
+            <p>Content-blind secure-communication infrastructure — the relay only ever sees ciphertext and connection metadata, never message content, whether the endpoint is a person or an agent.</p>
           </div>
-          <div class="reg-status">E2E messaging prototype<br>zero-knowledge relay</div>
+          <div class="reg-status">E2E messaging prototype<br>content-blind relay</div>
         </div>
       </div>
     </div>
@@ -273,7 +273,7 @@
             <tr>
               <td class="claim">Authorization decided outside the model</td>
               <td><span class="tag real">REAL</span></td>
-              <td class="ev"><code>evaluate()</code> returns ALLOW / DENY / REQUIRE_APPROVAL from stored grants only; 88 passing tests in renker-core-authz.</td>
+              <td class="ev"><code>evaluate()</code> returns ALLOW / DENY / REQUIRE_APPROVAL from stored grants only; 89 passing tests in renker-core-authz.</td>
             </tr>
             <tr>
               <td class="claim">Tamper-evident audit log</td>
@@ -349,7 +349,7 @@
           <div class="cn" style="margin-top:12px"></div>
           <div class="db core"><div class="t">renker-core</div><div class="s">shared foundation</div></div>
           <div class="cn"></div>
-          <div class="db authz"><div class="t">renker-core-authz</div><div class="s">public · 88 tests · CI-enforced · Apache-2.0</div></div>
+          <div class="db authz"><div class="t">renker-core-authz</div><div class="s">public · 89 tests · CI-enforced · Apache-2.0</div></div>
           <div class="cn"></div>
           <div class="prims">Identity · Capability · Policy · Audit</div>
         </div>
