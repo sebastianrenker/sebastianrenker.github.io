@@ -27,7 +27,7 @@ Two static pages, no framework, no server logic:
 | Path | Purpose |
 |---|---|
 | `index.html` | Landing page |
-| `datenschutz.html` | Privacy notice |
+| `privacy.html` | Privacy notice |
 | `fonts/` | Self-hosted webfonts (SIL OFL 1.1) |
 | `reality-check.md` | Fact-check reference for the page content |
 
