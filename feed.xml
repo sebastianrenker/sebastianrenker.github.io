@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+<title>RENKER</title><link>https://sebastianrenker.github.io/</link>
+<description>Trusted infrastructure for autonomous AI.</description><language>en</language>
+<item><title>Guardrails outside the model: authorizing AI agent actions</title>
+<link>https://sebastianrenker.github.io/blog/guardrails-outside-the-model/</link>
+<guid>https://sebastianrenker.github.io/blog/guardrails-outside-the-model/</guid>
+<pubDate>Sun, 11 Oct 2026 12:00:00 GMT</pubDate>
+<description>Why guardrails inside an LLM can be talked around, and how a deterministic decision made outside the model limits what prompt injection can change.</description></item>
+</channel></rss>

@@ -1,0 +1,41 @@
+name: crosspost
+# Manual, one click per post. Defaults to dry-run; dev.to gets a DRAFT unless you tick "publish".
+on:
+  workflow_dispatch:
+    inputs:
+      page:
+        description: "Page file to share, e.g. blog/guardrails-outside-the-model/index.html"
+        required: true
+      send:
+        description: "Really send (otherwise dry-run)"
+        type: boolean
+        default: false
+      publish:
+        description: "dev.to: publish immediately (otherwise draft)"
+        type: boolean
+        default: false
+      tags:
+        description: "dev.to tags, comma separated, max 4"
+        default: "ai,security,python"
+permissions:
+  contents: read
+jobs:
+  crosspost:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cross-post
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          PAGE: ${{ inputs.page }}
+          SEND: ${{ inputs.send }}
+          PUBLISH: ${{ inputs.publish }}
+          TAGS: ${{ inputs.tags }}
+        run: |
+          set -eu
+          args=""
+          [ "$SEND" = "true" ] && args="$args --send"
+          [ "$PUBLISH" = "true" ] && args="$args --publish"
+          python scripts/crosspost.py "$PAGE" --tags "$TAGS" $args
