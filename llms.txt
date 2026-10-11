@@ -9,6 +9,9 @@
 - [Renker Swarm](https://sebastianrenker.github.io/renker-swarm/): free, self-throttling multi-provider agent orchestrator (Apache-2.0)
 - [Rencora](https://sebastianrenker.github.io/rencora-public/): voice-driven holographic AI assistant (CC BY-NC 4.0, derivative of Mark LI)
 
+- [CUSTOS](https://renker-industries.github.io/custos/): proof gates for AI coding agents (MIT)
+- [Selfproof](https://renker-industries.github.io/selfproof/): evidence ledger for AI-written code, pre-release (Apache-2.0)
+
 ## Optional
 - [Reality check](https://github.com/sebastianrenker/sebastianrenker.github.io/blob/main/reality-check.md): claim-by-claim verification status
 - [Guardrails outside the model](https://sebastianrenker.github.io/blog/guardrails-outside-the-model/): why in-model guardrails can be talked around and how a deterministic decision outside the model limits prompt injection

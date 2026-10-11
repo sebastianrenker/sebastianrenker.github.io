@@ -8,7 +8,7 @@ Targets (each only if its credentials are present in the environment):
 
 Usage: python scripts/crosspost.py <path/to/index.html> [--send] [--publish] [--tags a,b,c]
 """
-import argparse, html, json, os, re, sys, urllib.request
+import argparse, html, json, os, pathlib, re, sys, urllib.error, urllib.request
 
 SITE = "https://sebastianrenker.github.io"
 
@@ -28,6 +28,22 @@ def read_page(path):
     return title, desc, url
 
 
+LEDGER = pathlib.Path(__file__).resolve().parent.parent / "crossposted.json"
+
+
+def ledger_load():
+    try:
+        return json.loads(LEDGER.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def ledger_mark(url, target, ref):
+    data = ledger_load()
+    data.setdefault(url, {})[target] = ref
+    LEDGER.write_text(json.dumps(data, indent=1, sort_keys=True) + chr(10), encoding="utf-8")
+
+
 def post_json(url, payload, headers):
     ua = {"User-Agent": "renker-crosspost/1.0 (+https://sebastianrenker.github.io; own-content cross-poster)",
           "Accept": "application/json"}
@@ -37,8 +53,10 @@ def post_json(url, payload, headers):
         return json.loads(r.read().decode() or "{}")
 
 
-def devto(title, desc, url, tags, publish, send):
+def devto(title, desc, url, tags, publish, send, force=False):
     key = os.environ.get("DEVTO_API_KEY")
+    if "devto" in ledger_load().get(url, {}) and not force:
+        print("[devto] skipped: already posted (" + ledger_load()[url]["devto"] + "); use --force to repeat"); return
     body = f"{desc}\n\n**Read the full post:** {url}\n\n*Originally published at {url}.*"
     art = {"article": {"title": title, "body_markdown": body, "published": publish,
                        "canonical_url": url, "tags": tags[:4]}}
@@ -46,9 +64,12 @@ def devto(title, desc, url, tags, publish, send):
         print("[devto] DRY-RUN" if key or not send else "[devto] skipped: no DEVTO_API_KEY"); print(json.dumps(art, indent=1)[:600]); return
     r = post_json("https://dev.to/api/articles", art, {"api-key": key})
     print("[devto] created", r.get("url"), "published=" + str(r.get("published")))
+    ledger_mark(url, "devto", r.get("url") or "created")
 
 
-def bluesky(title, desc, url, send):
+def bluesky(title, desc, url, send, force=False):
+    if "bluesky" in ledger_load().get(url, {}) and not force:
+        print("[bluesky] skipped: already posted (" + ledger_load()[url]["bluesky"] + "); use --force to repeat"); return
     h, pw = os.environ.get("BSKY_HANDLE"), os.environ.get("BSKY_APP_PASSWORD")
     room = 300 - len(url) - 2
     text = f"{title}\n\n{desc}"
@@ -67,6 +88,7 @@ def bluesky(title, desc, url, send):
                   {"repo": s["did"], "collection": "app.bsky.feed.post", "record": rec},
                   {"Authorization": "Bearer " + s["accessJwt"]})
     print("[bluesky] posted", r.get("uri"))
+    ledger_mark(url, "bluesky", r.get("uri") or "posted")
 
 
 if __name__ == "__main__":
@@ -74,12 +96,13 @@ if __name__ == "__main__":
     ap.add_argument("page"); ap.add_argument("--send", action="store_true")
     ap.add_argument("--publish", action="store_true", help="dev.to: publish instead of saving a draft")
     ap.add_argument("--tags", default="ai,security,python")
+    ap.add_argument("--force", action="store_true", help="repeat a target already recorded in crossposted.json")
     a = ap.parse_args()
     title, desc, url = read_page(a.page)
     tags = [x.strip() for x in a.tags.split(",") if x.strip()]
     failed = False
-    for name, fn in (("devto", lambda: devto(title, desc, url, tags, a.publish, a.send)),
-                     ("bluesky", lambda: bluesky(title, desc, url, a.send))):
+    for name, fn in (("devto", lambda: devto(title, desc, url, tags, a.publish, a.send, a.force)),
+                     ("bluesky", lambda: bluesky(title, desc, url, a.send, a.force))):
         try:
             fn()
         except urllib.error.HTTPError as e:
