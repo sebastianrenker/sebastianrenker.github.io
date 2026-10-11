@@ -1,0 +1,13 @@
+# RENKER
+
+> Trusted infrastructure for autonomous AI: capability, permission, identity and audit for agents that act, learn and communicate. Prototypes are labelled as prototypes; every claim is checked against code.
+
+## Projects
+- [renker-core-authz](https://sebastianrenker.github.io/renker-core-authz/): deterministic ALLOW / DENY / REQUIRE_APPROVAL decisions for agent actions, hash-chained audit log (Apache-2.0)
+- [RenkerVault](https://sebastianrenker.github.io/renkervault/): E2EE chat prototype with a content-blind relay and post-quantum hybrid handshake (MIT)
+- [CONTINUUM](https://sebastianrenker.github.io/continuum/): continually learning research-system prototype, Phase 0 (MIT)
+- [Renker Swarm](https://sebastianrenker.github.io/renker-swarm/): free, self-throttling multi-provider agent orchestrator (Apache-2.0)
+- [Rencora](https://sebastianrenker.github.io/rencora-public/): voice-driven holographic AI assistant (CC BY-NC 4.0, derivative of Mark LI)
+
+## Optional
+- [Reality check](https://github.com/sebastianrenker/sebastianrenker.github.io/blob/main/reality-check.md): claim-by-claim verification status
