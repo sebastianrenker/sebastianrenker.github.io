@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guardrails outside the model: authorizing AI agent actions</title>
+<meta name="description" content="Why guardrails inside an LLM can be talked around, and how a deterministic decision made outside the model limits what prompt injection can change.">
+<link rel="canonical" href="https://sebastianrenker.github.io/blog/guardrails-outside-the-model/">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta property="og:type" content="article"><meta property="og:title" content="Guardrails outside the model">
+<meta property="og:description" content="Prompt injection changes the request, not the grant, so not the decision.">
+<meta property="og:url" content="https://sebastianrenker.github.io/blog/guardrails-outside-the-model/">
+<meta property="og:image" content="https://sebastianrenker.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Guardrails outside the model: authorizing AI agent actions","description":"Why guardrails inside an LLM can be talked around, and how a deterministic decision made outside the model limits prompt injection.","datePublished":"2026-10-11","dateModified":"2026-10-11","inLanguage":"en","mainEntityOfPage":"https://sebastianrenker.github.io/blog/guardrails-outside-the-model/","author":{"@type":"Person","name":"Sebastian Renker","url":"https://github.com/sebastianrenker"},"image":"https://sebastianrenker.github.io/og.png"}</script>
+<style>
+:root{--bg:#eceef1;--card:#f7f8fa;--ink:#16171a;--ink2:#565961;--rule:#d5d8dd;--acc:#5b47e0;--warn:#8f6410}
+@media(prefers-color-scheme:dark){:root{--bg:#161719;--card:#1c1e21;--ink:#e9e9ec;--ink2:#a2a4ab;--rule:#2c2e34;--acc:#8f80ff;--warn:#d6ad4e}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.7 Georgia,"Times New Roman",serif}
+.w{max-width:720px;margin:0 auto;padding:0 20px}header{border-bottom:1px solid var(--rule);font:600 16px system-ui,sans-serif}header .w{padding:14px 20px}
+a{color:var(--acc)}h1{font:700 clamp(30px,5vw,44px)/1.15 system-ui,sans-serif;margin:40px 0 8px;letter-spacing:-.02em}
+h2{font:700 24px/1.3 system-ui,sans-serif;margin:40px 0 8px}.meta{color:var(--ink2);font:15px system-ui,sans-serif}
+pre{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;overflow-x:auto;font:14px/1.5 ui-monospace,Consolas,monospace}
+code{font:0.88em ui-monospace,Consolas,monospace;background:var(--card);padding:1px 5px;border-radius:4px}pre code{padding:0;background:none}
+table{border-collapse:collapse;width:100%;font:16px system-ui,sans-serif;margin:16px 0}th,td{border:1px solid var(--rule);padding:8px 10px;text-align:left}th{background:var(--card)}
+.note{border-left:4px solid var(--warn);background:var(--card);padding:12px 18px;border-radius:0 8px 8px 0;font:17px/1.6 system-ui,sans-serif}
+footer{border-top:1px solid var(--rule);margin-top:56px;padding:24px 0;color:var(--ink2);font:15px system-ui,sans-serif}:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+</style></head><body>
+<header><div class="w"><a href="https://sebastianrenker.github.io/" style="text-decoration:none;color:inherit">RENKER</a></div></header>
+<main class="w"><article>
+<h1>Guardrails outside the model</h1>
+<p class="meta">Sebastian Renker · 11 October 2026 · 5 min read</p>
+
+<p>An AI agent that can read files, write files and send messages has capabilities. A prompt injection is text that tries to talk the agent into using those capabilities for someone else. If the only thing between the injected text and the action is the model's own judgement, the attacker is arguing with the guard in the guard's own language.</p>
+
+<h2>The problem with guardrails inside the model</h2>
+<p>A rule such as "never read the secrets folder" written into a system prompt lives in the same channel as the attacker's text. The model weighs both. Sometimes it holds, sometimes it does not, and you cannot prove which. A defence that is probabilistic by construction is a poor fit for a question that has a yes-or-no answer: <em>is this actor allowed to do this action on this resource, right now?</em></p>
+
+<h2>Move the decision out</h2>
+<p>The idea is small. The agent may <em>request</em> anything. A separate function, which never sees the agent's reasoning, decides whether the request runs. That function reads only trusted inputs: the actor, the action, the target, and a store of capabilities that a human granted. It returns one of three answers:</p>
+<ul><li><strong>ALLOW</strong>: the request matches a grant.</li><li><strong>DENY</strong>: it does not.</li><li><strong>REQUIRE_APPROVAL</strong>: it needs a human in the loop first.</li></ul>
+<p>Prompt injection changes the request. It does not change the grant, so it does not change the decision.</p>
+
+<h2>What that looks like</h2>
+<p><a href="https://github.com/sebastianrenker/renker-core-authz">renker-core-authz</a> is a standard-library-only Python implementation of this idea, with a hash-chained audit log. A least-privilege grant is one action verb plus one path scope, and it expires:</p>
+<pre><code>from datetime import datetime, timedelta, timezone
+from renker_core_authz import (
+    Actor, Capability, CapabilityStore, PathScope, GuardedFilesystem,
+)
+from renker_core_authz.audit import AuditLog
+
+now = datetime.now(timezone.utc)
+store = CapabilityStore()
+store.grant(
+    Capability(
+        capability="filesystem.write",
+        scope=PathScope(base="~/Documents/drafts"),
+        granted_to="agent:session-1",
+        granted_by="human:owner",
+        issued_at=now,
+        expires_at=now + timedelta(hours=1),
+    )
+)
+
+guard = GuardedFilesystem(store, AuditLog("audit.log"))
+result = guard.write(Actor("agent", "session-1"), "~/Documents/drafts/note.txt", "hi")
+print(result.decision.value, result.reason)  # ALLOW / DENY with an explainable reason</code></pre>
+
+<h2>Watching an injection fail</h2>
+<p>The companion repository <a href="https://github.com/sebastianrenker/renker-agent-demo">renker-agent-demo</a> runs a scripted scenario with no LLM, no network and no API key. A file the agent reads contains hidden instructions to exfiltrate a secret. The gateway still decides from the grants:</p>
+<table><thead><tr><th>Step</th><th>Request</th><th>Decision</th></tr></thead><tbody>
+<tr><td>legit read task</td><td><code>workspace/task.txt</code></td><td>ALLOW</td></tr>
+<tr><td>legit write draft</td><td><code>workspace/drafts/summary.txt</code></td><td>ALLOW</td></tr>
+<tr><td>injected read secret</td><td><code>secrets/api_key.txt</code> (out of scope)</td><td>DENY</td></tr>
+<tr><td>injected traversal write</td><td><code>drafts/../../secrets/stolen.txt</code></td><td>DENY</td></tr>
+<tr><td>injected send exfil</td><td><code>outbox/exfil.eml</code></td><td>REQUIRE_APPROVAL, human declines</td></tr>
+<tr><td>legit send reply</td><td><code>outbox/reply.eml</code></td><td>REQUIRE_APPROVAL, human approves</td></tr>
+</tbody></table>
+<p>None of those outcomes depended on the agent behaving well. The demo also edits one audit entry on disk and shows that <code>verify()</code> catches it.</p>
+
+<h2>What this does not do</h2>
+<div class="note"><p>This is a prototype-grade library, not an externally audited product. It does <strong>not</strong> provide cryptographic authentication of actors (identity is validated, not authenticated), protection once the host account is fully compromised, enforcement for actions that are not routed through it, an externally anchored audit, or multi-process audit coordination. The audit log is tamper-evident, not immutable: an attacker who can rewrite both the log and its head anchor can still forge history.</p></div>
+<p>The boundary only helps if every side effect goes through it. A tool that touches the filesystem directly, bypassing the gateway, is not covered. That is a property of the design, and it is stated up front rather than discovered later.</p>
+
+<h2>Try it</h2>
+<pre><code>pip install -e .
+python scripts/run_demo.py</code></pre>
+<p>Source and issues: <a href="https://github.com/sebastianrenker/renker-core-authz">renker-core-authz</a> (Apache-2.0) and <a href="https://github.com/sebastianrenker/renker-agent-demo">renker-agent-demo</a>. Feedback on the threat model is the most useful thing you can send.</p>
+</article></main>
+<footer><div class="w">© 2026 Sebastian Renker · <a href="https://sebastianrenker.github.io/">RENKER</a> · <a href="https://sebastianrenker.github.io/renker-core-authz/">renker-core-authz</a></div></footer>
+</body></html>

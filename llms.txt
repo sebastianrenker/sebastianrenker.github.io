@@ -11,3 +11,4 @@
 
 ## Optional
 - [Reality check](https://github.com/sebastianrenker/sebastianrenker.github.io/blob/main/reality-check.md): claim-by-claim verification status
+- [Guardrails outside the model](https://sebastianrenker.github.io/blog/guardrails-outside-the-model/): why in-model guardrails can be talked around and how a deterministic decision outside the model limits prompt injection
