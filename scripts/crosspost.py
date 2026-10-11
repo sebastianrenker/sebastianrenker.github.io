@@ -29,7 +29,10 @@ def read_page(path):
 
 
 def post_json(url, payload, headers):
-    req = urllib.request.Request(url, json.dumps(payload).encode(), {"Content-Type": "application/json", **headers})
+    ua = {"User-Agent": "renker-crosspost/1.0 (+https://sebastianrenker.github.io; own-content cross-poster)",
+          "Accept": "application/json"}
+    req = urllib.request.Request(url, json.dumps(payload).encode(),
+                                 {"Content-Type": "application/json", **ua, **headers})
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read().decode() or "{}")
 
@@ -74,5 +77,15 @@ if __name__ == "__main__":
     a = ap.parse_args()
     title, desc, url = read_page(a.page)
     tags = [x.strip() for x in a.tags.split(",") if x.strip()]
-    devto(title, desc, url, tags, a.publish, a.send)
-    bluesky(title, desc, url, a.send)
+    failed = False
+    for name, fn in (("devto", lambda: devto(title, desc, url, tags, a.publish, a.send)),
+                     ("bluesky", lambda: bluesky(title, desc, url, a.send))):
+        try:
+            fn()
+        except urllib.error.HTTPError as e:
+            failed = True
+            print(f"[{name}] FAILED HTTP {e.code}: {e.read().decode(errors='replace')[:300]}")
+        except Exception as e:  # network etc.; never print secrets
+            failed = True
+            print(f"[{name}] FAILED {type(e).__name__}: {str(e)[:200]}")
+    sys.exit(1 if failed else 0)
